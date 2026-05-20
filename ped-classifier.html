@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>PED 2014/68/EU Category Classifier | Mlivo Workflow</title>
-  <meta name="description" content="Free online PED 2014/68/EU pressure equipment category classifier — Annex II Tables 1–8. No login required."/>
+  <meta name="description" content="Free online PED 2014/68/EU pressure equipment category classifier — Annex II Tables 1–4 (vessels) and 6–9 (piping). No login required."/>
   <style>
     :root{
       --bg:#0b0f14;--panel:#111824;--text:#e8eef7;--muted:#a8b3c5;
@@ -427,8 +427,8 @@ function classify(){
 
     if(fluidState === 'gas'){
       if(fluidGroup === 1){
-        /* Table 5 — Piping, Group 1, gas */
-        tableRef = 'Annex II, Table 5 — Piping containing Group 1 fluids (gas/vapour)';
+        /* Table 6 — Piping, Group 1, gas */
+        tableRef = 'Annex II, Table 6 — Piping containing Group 1 fluids (gas/vapour)';
         if(dn <= 25){
           cat = 'art4';
           explain = `DN = <strong>${dn} mm</strong> ≤ 25 mm → Article 4(3) applies regardless of pressure.`;
@@ -444,8 +444,8 @@ function classify(){
         }
 
       } else {
-        /* Table 6 — Piping, Group 2, gas */
-        tableRef = 'Annex II, Table 6 — Piping containing Group 2 fluids (gas/vapour, e.g. steam, air)';
+        /* Table 7 — Piping, Group 2, gas */
+        tableRef = 'Annex II, Table 7 — Piping containing Group 2 fluids (gas/vapour, e.g. steam, air)';
         if(dn <= 32 || (ps <= 10 && dn <= 200)){
           cat = 'art4';
           explain = `DN ≤ 32 mm${dn <= 200 && ps <= 10 ? ', or PS ≤ 10 bar and DN ≤ 200 mm' : ''} → Article 4(3).`;
@@ -464,8 +464,8 @@ function classify(){
     } else {
       /* Liquid piping */
       if(fluidGroup === 1){
-        /* Table 7 — Piping, Group 1, liquid */
-        tableRef = 'Annex II, Table 7 — Piping containing Group 1 fluids (liquid)';
+        /* Table 8 — Piping, Group 1, liquid */
+        tableRef = 'Annex II, Table 8 — Piping containing Group 1 fluids (liquid)';
         if(ps <= 25 || psdn <= 2000){
           cat = 'art4';
           explain = `${ps <= 25 ? 'PS ≤ 25 bar' : `PS × DN = ${fmt(psdn)} bar·mm ≤ 2,000`} → Article 4(3).`;
@@ -478,8 +478,8 @@ function classify(){
         }
 
       } else {
-        /* Table 8 — Piping, Group 2, liquid */
-        tableRef = 'Annex II, Table 8 — Piping containing Group 2 fluids (liquid, e.g. water, cooling water)';
+        /* Table 9 — Piping, Group 2, liquid */
+        tableRef = 'Annex II, Table 9 — Piping containing Group 2 fluids (liquid, e.g. water, cooling water)';
         if(ps <= 10 || psdn <= 5000){
           cat = 'art4';
           explain = `${ps <= 10 ? 'PS ≤ 10 bar' : `PS × DN = ${fmt(psdn)} bar·mm ≤ 5,000`} → Article 4(3).`;
