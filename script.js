@@ -109,7 +109,14 @@ const I18N = {
     area_text: "EU-wide (remote)",
     billing_title: "Billing model",
     billing_text: "Fixed-price packages only",
-    footer_text: "Workflow • Documentation • Data Optimization<br/>EU-wide | Fixed-price packages"
+    footer_text: "Workflow • Documentation • Data Optimization<br/>EU-wide | Fixed-price packages",
+
+    nav_tools: "Tools",
+    tools_title: "Free Tools",
+    tools_sub: "Practical tools for engineering teams — free to use, no login required.",
+    tools_ped_title: "PED 2014/68/EU Classifier",
+    tools_ped_desc: "Determine the pressure equipment category (I–IV) based on Annex II, Tables 1–8 of the Pressure Equipment Directive.",
+    tools_ped_btn: "Open Classifier"
   },
 
   de: {
@@ -221,7 +228,14 @@ const I18N = {
     area_text: "EU-weit (remote)",
     billing_title: "Abrechnung",
     billing_text: "Nur Fixpreis-Pakete",
-    footer_text: "Workflow • Dokumentation • Datenoptimierung<br/>EU-weit | Fixpreis-Pakete"
+    footer_text: "Workflow • Dokumentation • Datenoptimierung<br/>EU-weit | Fixpreis-Pakete",
+
+    nav_tools: "Tools",
+    tools_title: "Kostenlose Tools",
+    tools_sub: "Praktische Hilfsmittel für Engineering-Teams — kostenlos, ohne Login.",
+    tools_ped_title: "PED 2014/68/EU Klassifizierer",
+    tools_ped_desc: "Druckgeräte-Kategorie (I–IV) bestimmen gemäß Anhang II, Tabellen 1–8 der Druckgeräterichtlinie.",
+    tools_ped_btn: "Klassifizierer öffnen"
   }
 };
 
