@@ -596,7 +596,7 @@ function show(cat, explain, tableRef, eqType, fluidGroup, fluidState, ps, vol, d
   el.scrollIntoView({behavior:'smooth', block:'nearest'});
 
   // Show report form + auto-fill date
-  document.getElementById('reportForm').style.display = '';
+  document.getElementById('reportForm').style.display = 'block';
   const rd = document.getElementById('rp_date');
   if(!rd.value) rd.value = new Date().toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'});
 }
