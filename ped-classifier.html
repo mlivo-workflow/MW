@@ -62,7 +62,7 @@
     .fg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     .field{display:flex;flex-direction:column;gap:6px}
     .field label{font-size:13px;color:var(--muted);font-weight:600;letter-spacing:.3px}
-    .field select,.field input[type=number]{
+    .field select,.field input[type=number],.field input[type=text]{
       background:rgba(11,15,20,.7);border:1px solid rgba(34,48,73,.9);
       border-radius:10px;color:var(--text);padding:11px 14px;
       font-size:15px;font-family:inherit;outline:none;transition:border-color .15s;
@@ -153,6 +153,49 @@
       font-size:13px;color:var(--muted);
     }
     .footer-inner a{color:var(--accent2)}
+    /* Report form */
+    #reportForm .form-card{border-color:rgba(76,175,135,.3)}
+    #reportForm h3{color:var(--c1)}
+    /* Print */
+    @media print{
+      *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      body{background:#fff!important;color:#111!important;font-size:12px!important}
+      .header,.page-head,.form-card,.info-row,.cat-guide,.disclaimer,
+      footer,#result,#reportForm,.wrap>h2{display:none!important}
+      #printArea{display:block!important}
+      .pr-doc{font-family:'Segoe UI',Arial,sans-serif;font-size:12px;color:#111;line-height:1.5}
+      .pr-header{display:flex;justify-content:space-between;align-items:flex-end;
+        padding-bottom:10px;margin-bottom:16px;border-bottom:3px solid #1a3a6b}
+      .pr-title{font-size:18px;font-weight:700;color:#1a3a6b}
+      .pr-dir{font-size:10px;color:#666;margin-top:3px;letter-spacing:.3px}
+      .pr-brand{font-size:13px;font-weight:700;color:#3a5a9a;text-align:right;line-height:1.4}
+      .pr-brand small{display:block;font-size:10px;font-weight:400;color:#888}
+      .pr-meta{width:100%;border-collapse:collapse;margin-bottom:16px}
+      .pr-meta th{background:#eef2f8;font-weight:600;color:#333;padding:5px 10px;
+        text-align:left;border:1px solid #c8d3e0;font-size:11px;width:20%}
+      .pr-meta td{padding:5px 10px;border:1px solid #c8d3e0;color:#111;font-size:12px}
+      .pr-sec{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;
+        color:#1a3a6b;border-bottom:1px solid #c8d3e0;padding-bottom:3px;margin:14px 0 8px}
+      .pr-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+      .pr-chips span{font-size:11px;padding:3px 8px;background:#f4f6fb;border:1px solid #c8d3e0;border-radius:3px}
+      .pr-chips span strong{color:#1a3a6b}
+      .pr-result{padding:12px 16px;border-left:5px solid #aaa;background:#f8f9fc;margin-bottom:10px}
+      .pr-cat{font-size:17px;font-weight:800;margin-bottom:5px}
+      .pr-expl{font-size:12px;color:#333;line-height:1.65}
+      .pr-expl strong{color:#1a3a6b}
+      .pr-mod{font-size:11px;color:#555;margin-top:8px;padding-top:7px;border-top:1px solid #ddd}
+      .pr-mod strong{color:#1a3a6b}
+      .pr-ref{font-size:10px;color:#777;font-style:italic;margin-bottom:12px}
+      .pr-result.prc-sep{border-left-color:#4a9a4a}.pr-result.prc-sep .pr-cat{color:#2a6a2a}
+      .pr-result.prc-c1{border-left-color:#2a7abf}.pr-result.prc-c1 .pr-cat{color:#1a5a9a}
+      .pr-result.prc-c2{border-left-color:#6a6abf}.pr-result.prc-c2 .pr-cat{color:#4a4a9a}
+      .pr-result.prc-c3{border-left-color:#bf7a2a}.pr-result.prc-c3 .pr-cat{color:#8a5010}
+      .pr-result.prc-c4{border-left-color:#bf2a2a}.pr-result.prc-c4 .pr-cat{color:#8a1010}
+      .pr-disc{font-size:9.5px;color:#666;border-top:1px solid #c8d3e0;
+        padding-top:10px;margin-top:16px;line-height:1.55}
+      .pr-foot{font-size:9px;color:#999;text-align:center;margin-top:8px;
+        padding-top:6px;border-top:1px dotted #ddd}
+    }
     @media(max-width:580px){.fg{grid-template-columns:1fr}.span2{grid-column:1}}
   </style>
 </head>
@@ -248,6 +291,29 @@
     <div class="r-module" id="rModule" style="display:none"></div>
     <div class="r-ref" id="rRef"></div>
   </div>
+
+  <!-- Report form (visible after classification) -->
+  <div id="reportForm" style="display:none;margin-top:12px">
+    <div class="form-card" style="border-color:rgba(76,175,135,.3)">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:14px">Generate PDF Report</h3>
+      <div class="fg">
+        <div class="field"><label>Prepared by (Ersteller)</label><input type="text" id="rp_name" placeholder="Your name"/></div>
+        <div class="field"><label>Date (Datum)</label><input type="text" id="rp_date"/></div>
+        <div class="field"><label>Project (Projekt)</label><input type="text" id="rp_proj" placeholder="Project name / number"/></div>
+        <div class="field"><label>Revision</label><input type="text" id="rp_rev" placeholder="e.g. A0"/></div>
+        <div class="field"><label>Line / Equipment No.</label><input type="text" id="rp_line" placeholder="e.g. P-100-001-AA1"/></div>
+        <div class="field"><label>Notes (optional)</label><input type="text" id="rp_notes" placeholder="Additional remarks"/></div>
+        <div class="span2">
+          <button class="btn" onclick="generatePDF()"
+            style="background:linear-gradient(135deg,rgba(76,175,135,.9),rgba(156,225,255,.65));color:#07130e">
+            ↓&nbsp; Save as PDF
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="printArea" style="display:none"></div>
 
   <h2 style="font-size:16px;margin-bottom:12px;color:var(--muted);font-weight:700;letter-spacing:.3px;text-transform:uppercase">Category overview</h2>
   <div class="cat-guide">
@@ -528,6 +594,67 @@ function show(cat, explain, tableRef, eqType, fluidGroup, fluidState, ps, vol, d
   else  { mod.style.display = 'none'; }
 
   el.scrollIntoView({behavior:'smooth', block:'nearest'});
+
+  // Show report form + auto-fill date
+  document.getElementById('reportForm').style.display = '';
+  const rd = document.getElementById('rp_date');
+  if(!rd.value) rd.value = new Date().toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'});
+}
+
+function generatePDF(){
+  const name  = document.getElementById('rp_name').value.trim() || '—';
+  const date  = document.getElementById('rp_date').value.trim()  || new Date().toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const proj  = document.getElementById('rp_proj').value.trim() || '—';
+  const rev   = document.getElementById('rp_rev').value.trim()  || '—';
+  const line  = document.getElementById('rp_line').value.trim() || '—';
+  const notes = document.getElementById('rp_notes').value.trim() || '—';
+
+  const badge    = document.getElementById('rBadge').textContent;
+  const paramsEl = document.getElementById('rParams');
+  const bodyHTML = document.getElementById('rBody').innerHTML;
+  const modEl    = document.getElementById('rModule');
+  const modHTML  = modEl.style.display !== 'none' ? modEl.innerHTML : '';
+  const refText  = document.getElementById('rRef').textContent;
+
+  const catMap = {'r-sep':'prc-sep','r-c1':'prc-c1','r-c2':'prc-c2','r-c3':'prc-c3','r-c4':'prc-c4','r-out':'prc-out'};
+  let prc = '';
+  const resEl = document.getElementById('result');
+  for(const [k,v] of Object.entries(catMap)){ if(resEl.classList.contains(k)){ prc=v; break; } }
+
+  document.getElementById('printArea').innerHTML = `
+<div class="pr-doc">
+  <div class="pr-header">
+    <div>
+      <div class="pr-title">PED 2014/68/EU — Classification Report</div>
+      <div class="pr-dir">Directive 2014/68/EU · Pressure Equipment · Annex II Classification</div>
+    </div>
+    <div class="pr-brand">Mlivo Workflow<small>Workflow · Documentation · Data</small></div>
+  </div>
+
+  <table class="pr-meta">
+    <tr><th>Prepared by</th><td>${name}</td><th>Date</th><td>${date}</td></tr>
+    <tr><th>Project</th><td>${proj}</td><th>Revision</th><td>${rev}</td></tr>
+    <tr><th>Line / Equip. No.</th><td>${line}</td><th>Notes</th><td>${notes}</td></tr>
+  </table>
+
+  <div class="pr-sec">Input Parameters</div>
+  <div class="pr-chips">${paramsEl.innerHTML}</div>
+
+  <div class="pr-sec">Classification Result</div>
+  <div class="pr-result ${prc}">
+    <div class="pr-cat">${badge}</div>
+    <div class="pr-expl">${bodyHTML}</div>
+    ${modHTML ? '<div class="pr-mod">'+modHTML+'</div>' : ''}
+  </div>
+  ${refText ? '<div class="pr-ref">'+refText+'</div>' : ''}
+
+  <div class="pr-disc">
+    <strong>Disclaimer:</strong> This report provides indicative guidance only, based on numerical approximations of the graphical charts in Annex II of Directive 2014/68/EU. It does not constitute a formal conformity assessment and cannot replace professional engineering judgement or consultation with a Notified Body. Always verify classification against the official directive text. <strong>Mlivo Workflow accepts no liability for any decisions made on the basis of this report.</strong>
+  </div>
+  <div class="pr-foot">Generated by Mlivo Workflow PED Classifier &nbsp;|&nbsp; Not a substitute for professional assessment</div>
+</div>`;
+
+  window.print();
 }
 </script>
 </body>
