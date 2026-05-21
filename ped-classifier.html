@@ -431,33 +431,33 @@ function classify(){
         tableRef = 'Annex II, Table 6 — Piping containing Group 1 fluids (gas/vapour)';
         if(dn <= 25){
           cat = 'art4';
-          explain = `DN = <strong>${dn} mm</strong> ≤ 25 mm → Article 4(3) applies regardless of pressure.`;
-        } else if(psdn <= 2000){
+          explain = `DN = <strong>${dn} mm</strong> ≤ 25 mm → Article 4(3) applies.`;
+        } else if(dn <= 100 && psdn <= 1000){
           cat = 'cat1';
-          explain = `PS × DN = <strong>${fmt(psdn)} bar·mm</strong> ≤ 2,000, DN > 25 mm → <strong>Category I</strong>.`;
-        } else if(psdn <= 5000){
+          explain = `DN ≤ 100 mm and PS × DN = <strong>${fmt(psdn)} bar·mm</strong> ≤ 1,000 → <strong>Category I</strong>.`;
+        } else if(dn <= 350 && psdn <= 3500){
           cat = 'cat2';
-          explain = `PS × DN = <strong>${fmt(psdn)} bar·mm</strong> (2,000 – 5,000 bar·mm) → <strong>Category II</strong>.`;
+          explain = `DN ≤ 350 mm and PS × DN = <strong>${fmt(psdn)} bar·mm</strong> ≤ 3,500 → <strong>Category II</strong>.`;
         } else {
           cat = 'cat3';
-          explain = `PS × DN = <strong>${fmt(psdn)} bar·mm</strong> > 5,000 bar·mm → <strong>Category III</strong>.`;
+          explain = `DN > 350 mm or PS × DN = <strong>${fmt(psdn)} bar·mm</strong> > 3,500 → <strong>Category III</strong>.`;
         }
 
       } else {
         /* Table 7 — Piping, Group 2, gas */
         tableRef = 'Annex II, Table 7 — Piping containing Group 2 fluids (gas/vapour, e.g. steam, air)';
-        if(dn <= 32 || (ps <= 10 && dn <= 200)){
+        if(dn <= 32 && psdn <= 1000){
           cat = 'art4';
-          explain = `DN ≤ 32 mm${dn <= 200 && ps <= 10 ? ', or PS ≤ 10 bar and DN ≤ 200 mm' : ''} → Article 4(3).`;
+          explain = `DN ≤ 32 mm and PS × DN = <strong>${fmt(psdn)} bar·mm</strong> ≤ 1,000 → Article 4(3).`;
         } else if(psdn <= 3500){
           cat = 'cat1';
           explain = `PS × DN = <strong>${fmt(psdn)} bar·mm</strong> ≤ 3,500 bar·mm → <strong>Category I</strong>.`;
-        } else if(psdn <= 5000){
+        } else if(dn > 250 && psdn > 5000){
+          cat = 'cat3';
+          explain = `DN > 250 mm and PS × DN = <strong>${fmt(psdn)} bar·mm</strong> > 5,000 → <strong>Category III</strong>.`;
+        } else {
           cat = 'cat2';
           explain = `PS × DN = <strong>${fmt(psdn)} bar·mm</strong> (3,500 – 5,000 bar·mm) → <strong>Category II</strong>.`;
-        } else {
-          cat = 'cat3';
-          explain = `PS × DN = <strong>${fmt(psdn)} bar·mm</strong> > 5,000 bar·mm → <strong>Category III</strong>.`;
         }
       }
 
@@ -466,26 +466,26 @@ function classify(){
       if(fluidGroup === 1){
         /* Table 8 — Piping, Group 1, liquid */
         tableRef = 'Annex II, Table 8 — Piping containing Group 1 fluids (liquid)';
-        if(ps <= 25 || psdn <= 2000){
+        if(dn <= 25 || psdn <= 2000){
           cat = 'art4';
-          explain = `${ps <= 25 ? 'PS ≤ 25 bar' : `PS × DN = ${fmt(psdn)} bar·mm ≤ 2,000`} → Article 4(3).`;
-        } else if(psdn <= 5000){
-          cat = 'cat2';
-          explain = `PS × DN = <strong>${fmt(psdn)} bar·mm</strong> (2,000 – 5,000 bar·mm), PS > 25 bar → <strong>Category II</strong>.`;
+          explain = `${dn <= 25 ? `DN = <strong>${dn} mm</strong> ≤ 25 mm` : `PS × DN = <strong>${fmt(psdn)}</strong> bar·mm ≤ 2,000`} → Article 4(3).`;
+        } else if(ps <= 10){
+          cat = 'cat1';
+          explain = `PS × DN = <strong>${fmt(psdn)} bar·mm</strong> > 2,000, PS = <strong>${ps} bar</strong> ≤ 10 bar → <strong>Category I</strong>.`;
         } else {
-          cat = 'cat3';
-          explain = `PS × DN = <strong>${fmt(psdn)} bar·mm</strong> > 5,000 bar·mm → <strong>Category III</strong>.`;
+          cat = 'cat2';
+          explain = `PS × DN = <strong>${fmt(psdn)} bar·mm</strong> > 2,000, PS > 10 bar → <strong>Category II</strong>. (Max. category for Group 1 liquid piping.)`;
         }
 
       } else {
         /* Table 9 — Piping, Group 2, liquid */
         tableRef = 'Annex II, Table 9 — Piping containing Group 2 fluids (liquid, e.g. water, cooling water)';
-        if(ps <= 10 || psdn <= 5000){
+        if(dn <= 200 && psdn <= 5000){
           cat = 'art4';
-          explain = `${ps <= 10 ? 'PS ≤ 10 bar' : `PS × DN = ${fmt(psdn)} bar·mm ≤ 5,000`} → Article 4(3).`;
+          explain = `DN ≤ 200 mm and PS × DN = <strong>${fmt(psdn)} bar·mm</strong> ≤ 5,000 → Article 4(3).`;
         } else {
           cat = 'cat1';
-          explain = `PS × DN = <strong>${fmt(psdn)} bar·mm</strong> > 5,000, PS > 10 bar → <strong>Category I</strong>.`;
+          explain = `DN > 200 mm or PS × DN = <strong>${fmt(psdn)} bar·mm</strong> > 5,000 → <strong>Category I</strong>. (Max. category for Group 2 liquid piping.)`;
         }
       }
     }
